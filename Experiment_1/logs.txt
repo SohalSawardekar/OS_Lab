@@ -1,0 +1,50 @@
+Script started on 2024-07-04 12:16:52+05:30 [TERM="xterm-256color" TTY="/dev/pts/1" COLUMNS="211" LINES="55"]
+[?2004h]0;sohal@Ubuntu: ~/Desktop/22B-CO-058[01;32msohal@Ubuntu[00m:[01;34m~/Desktop/22B-CO-058[00m$ mkdir GEC
+[?2004l[?2004h]0;sohal@Ubuntu: ~/Desktop/22B-CO-058[01;32msohal@Ubuntu[00m:[01;34m~/Desktop/22B-CO-058[00m$ cd GEC
+[?2004l[?2004h]0;sohal@Ubuntu: ~/Desktop/22B-CO-058/GEC[01;32msohal@Ubuntu[00m:[01;34m~/Desktop/22B-CO-058/GEC[00m$ mkdir COM{[KP
+[?2004l[?2004h]0;sohal@Ubuntu: ~/Desktop/22B-CO-058/GEC[01;32msohal@Ubuntu[00m:[01;34m~/Desktop/22B-CO-058/GEC[00m$ mkdir COMP[K[K[K[KIT
+[?2004l[?2004h]0;sohal@Ubuntu: ~/Desktop/22B-CO-058/GEC[01;32msohal@Ubuntu[00m:[01;34m~/Desktop/22B-CO-058/GEC[00m$ mkdir IT[K[KMECH
+[?2004l[?2004h]0;sohal@Ubuntu: ~/Desktop/22B-CO-058/GEC[01;32msohal@Ubuntu[00m:[01;34m~/Desktop/22B-CO-058/GEC[00m$ mkdir MECH[K[K[K[KCIVIL
+[?2004l[?2004h]0;sohal@Ubuntu: ~/Desktop/22B-CO-058/GEC[01;32msohal@Ubuntu[00m:[01;34m~/Desktop/22B-CO-058/GEC[00m$ cd COmp[K[KMP
+[?2004l[?2004h]0;sohal@Ubuntu: ~/Desktop/22B-CO-058/GEC/COMP[01;32msohal@Ubuntu[00m:[01;34m~/Desktop/22B-CO-058/GEC/COMP[00m$ mkdir SE
+[?2004l[?2004h]0;sohal@Ubuntu: ~/Desktop/22B-CO-058/GEC/COMP[01;32msohal@Ubuntu[00m:[01;34m~/Desktop/22B-CO-058/GEC/COMP[00m$ mkdir SE[K[K[K TE
+[?2004l[?2004h]0;sohal@Ubuntu: ~/Desktop/22B-CO-058/GEC/COMP[01;32msohal@Ubuntu[00m:[01;34m~/Desktop/22B-CO-058/GEC/COMP[00m$ mkdir TE[K[KBE
+[?2004l[?2004h]0;sohal@Ubuntu: ~/Desktop/22B-CO-058/GEC/COMP[01;32msohal@Ubuntu[00m:[01;34m~/Desktop/22B-CO-058/GEC/COMP[00m$ cd TE
+[?2004l[?2004h]0;sohal@Ubuntu: ~/Desktop/22B-CO-058/GEC/COMP/TE[01;32msohal@Ubuntu[00m:[01;34m~/Desktop/22B-CO-058/GEC/COMP/TE[00m$ mkdir OS
+[?2004l[?2004h]0;sohal@Ubuntu: ~/Desktop/22B-CO-058/GEC/COMP/TE[01;32msohal@Ubuntu[00m:[01;34m~/Desktop/22B-CO-058/GEC/COMP/TE[00m$ mkdir OS[K[K[K DBMS
+[?2004l[?2004h]0;sohal@Ubuntu: ~/Desktop/22B-CO-058/GEC/COMP/TE[01;32msohal@Ubuntu[00m:[01;34m~/Desktop/22B-CO-058/GEC/COMP/TE[00m$ mkdir DBMS[K[K[K[KWT
+[?2004l[?2004h]0;sohal@Ubuntu: ~/Desktop/22B-CO-058/GEC/COMP/TE[01;32msohal@Ubuntu[00m:[01;34m~/Desktop/22B-CO-058/GEC/COMP/TE[00m$ cd OS
+[?2004l[?2004h]0;sohal@Ubuntu: ~/Desktop/22B-CO-058/GEC/COMP/TE/OS[01;32msohal@Ubuntu[00m:[01;34m~/Desktop/22B-CO-058/GEC/COMP/TE/OS[00m$ cd OSmkdir WT[K[KLabs
+[?2004l[?2004h]0;sohal@Ubuntu: ~/Desktop/22B-CO-058/GEC/COMP/TE/OS[01;32msohal@Ubuntu[00m:[01;34m~/Desktop/22B-CO-058/GEC/COMP/TE/OS[00m$ mkdir Labs[K[K[K[KAssignmenr[Kts
+[?2004l[?2004h]0;sohal@Ubuntu: ~/Desktop/22B-CO-058/GEC/COMP/TE/OS[01;32msohal@Ubuntu[00m:[01;34m~/Desktop/22B-CO-058/GEC/COMP/TE/OS[00m$ cd ..
+[?2004l[?2004h]0;sohal@Ubuntu: ~/Desktop/22B-CO-058/GEC/COMP/TE[01;32msohal@Ubuntu[00m:[01;34m~/Desktop/22B-CO-058/GEC/COMP/TE[00m$ cd ..
+[?2004l[?2004h]0;sohal@Ubuntu: ~/Desktop/22B-CO-058/GEC/COMP[01;32msohal@Ubuntu[00m:[01;34m~/Desktop/22B-CO-058/GEC/COMP[00m$ cd ..
+[?2004l[?2004h]0;sohal@Ubuntu: ~/Desktop/22B-CO-058/GEC[01;32msohal@Ubuntu[00m:[01;34m~/Desktop/22B-CO-058/GEC[00m$ cd MECH
+[?2004l[?2004h]0;sohal@Ubuntu: ~/Desktop/22B-CO-058/GEC/MECH[01;32msohal@Ubuntu[00m:[01;34m~/Desktop/22B-CO-058/GEC/MECH[00m$ cd MECH[2P..mkdir Assignments[K[K[K[K[K[K[K[K[K[K[KSE
+[?2004l[?2004h]0;sohal@Ubuntu: ~/Desktop/22B-CO-058/GEC/MECH[01;32msohal@Ubuntu[00m:[01;34m~/Desktop/22B-CO-058/GEC/MECH[00m$ mkdir SE[K[KTE
+[?2004l[?2004h]0;sohal@Ubuntu: ~/Desktop/22B-CO-058/GEC/MECH[01;32msohal@Ubuntu[00m:[01;34m~/Desktop/22B-CO-058/GEC/MECH[00m$ mkdir TE[K[KBE
+[?2004l[?2004h]0;sohal@Ubuntu: ~/Desktop/22B-CO-058/GEC/MECH[01;32msohal@Ubuntu[00m:[01;34m~/Desktop/22B-CO-058/GEC/MECH[00m$ cd ..
+[?2004l[?2004h]0;sohal@Ubuntu: ~/Desktop/22B-CO-058/GEC[01;32msohal@Ubuntu[00m:[01;34m~/Desktop/22B-CO-058/GEC[00m$ cd ..
+[?2004l[?2004h]0;sohal@Ubuntu: ~/Desktop/22B-CO-058[01;32msohal@Ubuntu[00m:[01;34m~/Desktop/22B-CO-058[00m$ tree GEC
+[?2004l[01;34mGEC[00m
+|-- [01;34mCIVIL[00m
+|-- [01;34mCOMP[00m
+|   |-- [01;34mBE[00m
+|   |-- [01;34mSE[00m
+|   `-- [01;34mTE[00m
+|       |-- [01;34mDBMS[00m
+|       |-- [01;34mOS[00m
+|       |   |-- [01;34mAssignments[00m
+|       |   `-- [01;34mLabs[00m
+|       `-- [01;34mWT[00m
+|-- [01;34mIT[00m
+`-- [01;34mMECH[00m
+    |-- [01;34mBE[00m
+    |-- [01;34mSE[00m
+    `-- [01;34mTE[00m
+
+15 directories, 0 files
+[?2004h]0;sohal@Ubuntu: ~/Desktop/22B-CO-058[01;32msohal@Ubuntu[00m:[01;34m~/Desktop/22B-CO-058[00m$ exit
+[?2004lexit
+
+Script done on 2024-07-04 12:20:51+05:30 [COMMAND_EXIT_CODE="0"]

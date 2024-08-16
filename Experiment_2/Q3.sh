@@ -1,22 +1,50 @@
-#!/bin/bash
-
 echo "Enter a number: "
-read number
-digits=($(echo $number | grep -o . | sort -n))
-unique_digits=($(echo "${digits[@]}" | tr ' ' '\n' | sort -u | tr '\n' ' '))
+read num
 
-if [ ${#unique_digits[@]} -lt 2 ]; then
-echo "Not enough unique digits to find second smallest and second largest."
-return
-fi
+temp=$num
+temp1=$num
+min=9
+max=0
 
-second_smallest=${unique_digits[1]}
-second_largest=${unique_digits[-2]}
+while [ $temp -ne 0 ]
+do
+    dig=$(($temp%10))
+    if [ $dig -le $min ]
+    then
+        min=$dig
+    fi
+    if [ $dig -gt $max ]
+    then
+        max=$dig
+    fi
+    temp=$(($temp/10))
+done
 
-echo "Second smallest digit: $second_smallest"
-echo "Second largest digit: $second_largest"
+temp=$num;
+smin=9
+smax=0
 
-sum=$((second_smallest + second_largest))
-echo "Sum of second smallest and second largest digit: $sum"
+while [ $temp -ne 0 ]
+do
+    dig=$(($temp%10))
+    if [ $dig -ne $min ] && [ $dig -le $smin ]
+    then
+        smin=$dig
+    fi
+    temp=$(($temp/10))
+done
 
+while [ $temp1 -ne 0 ]
+do
+    dig=$(($temp1%10))
+    if [ $dig -ne $max ] && [ $dig -ge $smax ]
+    then
+        smax=$dig
+    fi
+    temp1=$(($temp1/10))
+done
 
+echo "Second minimum is: $smin"
+echo "Second maximum is: $smax"
+sum=$(($smax+$smin))
+echo "The sum is: $sum"

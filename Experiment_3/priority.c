@@ -30,14 +30,37 @@ void input(processes p[], int n)
         scanf("%hd", &p[i].priority);
 }
 
-void SortByBurstTime(processes p[], int n)
+void SortByArrivalTime(processes p[], int n)
 {
     processes temp;
     for (int i = 0; i < n - 1; i++)
     {
         for (int j = 0; j < n - i - 1; j++)
         {
-            if (p[j].priority > p[j + 1].priority && p[j + 1].ArrivalTime <= p[j].ArrivalTime)
+            if (p[j + 1].ArrivalTime < p[j].ArrivalTime)
+            {
+                temp = p[j];
+                p[j] = p[j + 1];
+                p[j + 1] = temp;
+            }
+        }
+    }
+}
+
+void SortByPriority(processes p[], int start, int n)
+{
+    processes temp;
+    for (int i = start; i < n - 1; i++)
+    {
+        for (int j = start; j < n - i + start - 1; j++)
+        {
+            if (p[j + 1].priority < p[j].priority)
+            {
+                temp = p[j];
+                p[j] = p[j + 1];
+                p[j + 1] = temp;
+            }
+            else if (p[j + 1].priority == p[j].priority && p[j + 1].BurstTime < p[j].BurstTime)
             {
                 temp = p[j];
                 p[j] = p[j + 1];
@@ -50,16 +73,18 @@ void SortByBurstTime(processes p[], int n)
 void cal_TAT(processes p[], int n)
 {
     float TotalTime = 0;
+    if (p[0].ArrivalTime > 0)
+        TotalTime = p[0].ArrivalTime;
+
     for (int i = 0; i < n; i++)
     {
-        if (p[i].ArrivalTime > TotalTime)
-        {
-            TotalTime = p[i].ArrivalTime;
-        }
-        p[i].CompletionTime = TotalTime + p[i].BurstTime;
+        TotalTime += p[i].BurstTime;
+        p[i].CompletionTime = TotalTime;
         p[i].TAT = p[i].CompletionTime - p[i].ArrivalTime;
         p[i].WT = p[i].TAT - p[i].BurstTime;
-        TotalTime = p[i].CompletionTime;
+
+        if (i + 1 < n && p[i + 1].ArrivalTime <= TotalTime)
+            SortByPriority(p, i + 1, n);
     }
 }
 
@@ -137,7 +162,7 @@ int main()
     p = (processes *)malloc(n * sizeof(processes));
     printf("\n");
     input(p, n);
-    SortByBurstTime(p, n);
+    SortByArrivalTime(p, n);
     cal_TAT(p, n);
 
     printf("\n\n");

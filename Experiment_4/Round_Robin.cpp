@@ -1,219 +1,44 @@
 #include <iostream>
 #include <stdio.h>
+#include <vector>
 #include <queue>
+#include <climits>
+#include <cfloat>
+#include <iomanip>
 
 using namespace std;
 
-class processes
+typedef struct Process
 {
-    int processNo;
-    float Arrival_time;
-    float Burst_time;
-    float WT;
-    float TAT;
-    float total_time;
-    float remaining_time;
+    int id;
+    float arrivalTime;
+    float burstTime;
+    float remainingTime;
+    float completionTime;
+    float turnaroundTime;
+    float waitingTime;
+} processes;
 
-public:
-    processes()
-    {
-        processNo = -1;
-        Arrival_time = 0;
-        Burst_time = 0;
-        WT = 0;
-        TAT = 0;
-        total_time = 0;
-        remaining_time = 0;
-    }
-
-    float ret_arrival() const { return Arrival_time; }
-
-    float ret_burst() const { return Burst_time; }
-
-    float get_TAT() const { return TAT; }
-
-    void set_remaining_time(float rt) { remaining_time = rt; }
-
-    float get_remaining_time() const { return remaining_time; }
-
-    int get_processNo() const { return processNo; }
-
-    void set_total_time(float t) { total_time = t; }
-
-    void set_TAT(float tat) { TAT = tat; }
-
-    void set_WT(float wt) { WT = wt; }
-
-    void display_process() const
-    {
-        printf("\t%-10d", processNo);
-        printf("%-20.2f", Arrival_time);
-        printf("%-20.2f", Burst_time);
-        printf("%-10.2f", TAT);
-        printf("%-10.2f\n", WT);
-    }
-
-    friend void input(processes p[], int n);
-    friend void sort(processes p[], int n);
-};
-
-queue<processes *> ready_q;
-queue<processes *> temp_queue;
-
-void sort(processes p[], int n)
+void input(vector<processes> &p, int n) // Pass vector by reference
 {
-    processes temp;
-    for (int i = 0; i < n - 1; i++)
-    {
-        for (int j = 0; j < n - i - 1; j++)
-        {
-            // sorting according to AT
-            if (p[j + 1].ret_arrival() < p[j].ret_arrival())
-            {
-                temp = p[j + 1];
-                p[j + 1] = p[j];
-                p[j] = temp;
-            }
-
-            // If AT is same then sort according to BT
-            else if (p[j + 1].ret_arrival() == p[j].ret_arrival())
-            {
-                if (p[j + 1].ret_burst() < p[j].ret_burst())
-                {
-                    temp = p[j + 1];
-                    p[j + 1] = p[j];
-                    p[j] = temp;
-                }
-            }
-        }
-    }
-}
-
-void sortByPno(processes p[], int n)
-{
-    processes temp;
-    for (int i = 0; i < n - 1; i++)
-    {
-        for (int j = 0; j < n - i - 1; j++)
-        {
-            // sorting according to AT
-            if (p[j + 1].get_processNo() < p[j].get_processNo())
-            {
-                temp = p[j + 1];
-                p[j + 1] = p[j];
-                p[j] = temp;
-            }
-        }
-    }
-}
-
-void input(processes p[], int n)
-{
-    cout << "Enter Burst Time: ";
     for (int i = 0; i < n; i++)
-        cin >> p[i].Burst_time;
+        p[i].id = i + 1;
 
-    cout << "Enter Arrival Time: ";
+    cout << "Enter burst time: ";
     for (int i = 0; i < n; i++)
-        cin >> p[i].Arrival_time;
+        scanf("%f", &p[i].burstTime);
 
+    cout << "Enter arrival time: ";
     for (int i = 0; i < n; i++)
-    {
-        p[i].processNo = i + 1;
-        p[i].remaining_time = p[i].Burst_time;
-    }
+        scanf("%f", &p[i].arrivalTime);
+
+    // Initialize remaining time
+    for (int i = 0; i < n; i++)
+        p[i].remainingTime = p[i].burstTime;
 }
 
-void round_robin_scheduling(processes p[], int n, float time_slice)
+void PrintTable(vector<processes> &p, int n)
 {
-    float time = 0;
-    unsigned int completed = 0;
-
-    ready_q.push(&p[0]);
-
-    while (completed < n)
-    {
-        if (!ready_q.empty())
-        {
-            processes *current_process = ready_q.front();
-            ready_q.pop();
-
-            if (current_process->get_remaining_time() <= time_slice)
-            {
-                time += current_process->get_remaining_time();
-                current_process->set_remaining_time(0);
-                current_process->set_total_time(time);
-                current_process->set_TAT(time - current_process->ret_arrival());
-                current_process->set_WT(current_process->get_TAT() - current_process->ret_burst());
-                completed++;
-            }
-            else
-            {
-                time += time_slice;
-                current_process->set_remaining_time(current_process->get_remaining_time() - time_slice);
-                ready_q.push(current_process);
-            }
-
-            // Add new processes that have arrived during the last time_slice
-            for (int j = 0; j < n; j++)
-            {
-                if (p[j].ret_arrival() <= time && p[j].get_remaining_time() > 0)
-                {
-                    bool in_queue = false;
-                    temp_queue = ready_q;
-                    while (!temp_queue.empty())
-                    {
-                        if (temp_queue.front() == &p[j])
-                        {
-                            in_queue = true;
-                            break;
-                        }
-                        temp_queue.pop();
-                    }
-                    if (!in_queue)
-                    {
-                        ready_q.push(&p[j]);
-                    }
-                }
-            }
-        }
-        else
-        {
-            time++;
-            // Check if any process can be added to the queue at the current time
-            for (int i = 0; i < n; i++)
-            {
-                if (p[i].ret_arrival() <= time && p[i].get_remaining_time() > 0)
-                {
-                    ready_q.push(&p[i]);
-                }
-            }
-        }
-    }
-}
-
-int main()
-{
-    processes *p;
-    int n;
-    float time_slice = 0;
-
-    cout << "Enter the number of processes: ";
-    cin >> n;
-
-    p = new processes[n];
-
-    input(p, n);
-    sort(p, n);
-
-    cout << "Enter time slice: ";
-    cin >> time_slice;
-
-    round_robin_scheduling(p, n, time_slice);
-
-    sortByPno(p, n);
-
-    cout << endl;
     printf("\t%-10s", "Process");
     printf("%-20s", "Arrival Time");
     printf("%-20s", "Burst Time");
@@ -221,11 +46,189 @@ int main()
     printf("%-10s\n", "WT");
     for (int i = 0; i < n; i++)
     {
-        p[i].display_process();
+        printf("\t%-10d", p[i].id);
+        printf("%-20.2f", p[i].arrivalTime);
+        printf("%-20.2f", p[i].burstTime);
+        printf("%-10.2f", p[i].turnaroundTime);
+        printf("%-10.2f\n", p[i].waitingTime);
+    }
+}
+
+void SRTN(vector<processes> &proc, int n, queue<Process> &ready_queue, queue<double> &time_stamp)
+{
+    vector<bool> isCompleted(n, false); // To track if a process is completed
+    int currentTime = 0;
+    int completed = 0;
+    float totalTAT = 0, totalWT = 0;
+
+    while (completed != n)
+    {
+        float minRemainingTime = FLT_MAX;
+        int index = -1;
+
+        // Select the process with the shortest remaining time at the current time
+        for (int i = 0; i < n; i++)
+        {
+            if (proc[i].arrivalTime <= currentTime && !isCompleted[i] && proc[i].remainingTime < minRemainingTime)
+            {
+                minRemainingTime = proc[i].remainingTime;
+                index = i;
+            }
+        }
+
+        if (index == -1)
+        {
+            // No process is ready, so just advance the current time
+            currentTime++;
+        }
+        else
+        {
+            // Process the selected process
+            ready_queue.push(proc[index]);
+            proc[index].remainingTime -= 1;
+            currentTime++;
+            time_stamp.push(currentTime);
+            if (proc[index].remainingTime <= 0)
+            {
+                // Process completed
+                proc[index].completionTime = currentTime;
+                proc[index].turnaroundTime = proc[index].completionTime - proc[index].arrivalTime;
+                proc[index].waitingTime = proc[index].turnaroundTime - proc[index].burstTime;
+
+                totalTAT += proc[index].turnaroundTime;
+                totalWT += proc[index].waitingTime;
+
+                isCompleted[index] = true;
+                completed++;
+            }
+        }
     }
 
-    
+    cout << endl;
+    PrintTable(proc, n);
+    cout << endl;
 
-    delete[] p;
+    // Calculate and display average TAT and average WT
+    cout << "\nAverage Turnaround Time: " << totalTAT / n << endl;
+    cout << "Average Waiting Time: " << totalWT / n << endl;
+}
+
+void PrintGanttChart(queue<Process> ready_queue, queue<double> time_stamp)
+{
+    // Print process IDs in order of execution
+    cout << "Gantt Chart:" << endl;
+    cout << " ";
+
+    queue<Process> temp_queue = ready_queue; // Temporary queue to avoid popping from the original
+    while (!temp_queue.empty())
+    {
+        cout << "-----";
+        temp_queue.pop();
+    }
+    cout << endl
+         << "|";
+
+    temp_queue = ready_queue; // Reset temp_queue for process ID printing
+    while (!temp_queue.empty())
+    {
+        Process p = temp_queue.front();
+        cout << " P" << p.id << " |";
+        temp_queue.pop();
+    }
+
+    cout << endl
+         << " ";
+
+    temp_queue = ready_queue; // Temporary queue for time stamps
+    while (!temp_queue.empty())
+    {
+        cout << "-----";
+        temp_queue.pop();
+    }
+    cout << endl;
+
+    // Print timestamps
+    queue<double> temp_time = time_stamp; // Reset temp_time for timestamp printing
+    double time = temp_time.front();
+    temp_time.pop();
+    cout << (int)time;
+    while (!temp_time.empty())
+    {
+        time = temp_time.front();
+        temp_time.pop();
+        cout << setw(5) << (int)time;
+    }
+    cout << endl;
+}
+
+void compress_queue(queue<Process> &ready_queue, queue<double> &time_stamp)
+{
+    queue<Process> temp_ready_queue = ready_queue, temp1;
+    queue<double> temp_time_stamp = time_stamp, temp2;
+    Process p = temp_ready_queue.front();
+    double ts = temp_time_stamp.front();
+    temp2.push(ts);
+    temp_ready_queue.pop();
+    temp_time_stamp.pop();
+    ts = temp_time_stamp.front();
+    temp_time_stamp.pop();
+
+    while (!temp_ready_queue.empty())
+    {
+        if (p.id == temp_ready_queue.front().id)
+        {
+            ts = temp_time_stamp.front();
+            temp_ready_queue.pop();
+            temp_time_stamp.pop();
+        }
+
+        else
+        {
+            temp1.push(p);
+            temp2.push(ts);
+            p = temp_ready_queue.front();
+            ts = temp_time_stamp.front();
+            temp_ready_queue.pop();
+            temp_time_stamp.pop();
+        }
+    }
+    temp1.push(p);
+    temp2.push(ts);
+
+    ready_queue = temp1;
+    time_stamp = temp2;
+}
+
+int main()
+{
+    int n;
+    cout << "Enter the number of processes: ";
+    cin >> n;
+
+    vector<Process> proc(n);
+    queue<Process> ready_queue;
+    queue<double> time_stamp;
+
+    input(proc, n);
+
+    float temp_arrival = FLT_MAX; // stores the starting arrival time
+    for (int i = 0; i < n; i++)
+    {
+        if (proc[i].arrivalTime < temp_arrival)
+            temp_arrival = proc[i].arrivalTime;
+    }
+
+    time_stamp.push(temp_arrival);
+
+    SRTN(proc, n, ready_queue, time_stamp);
+
+    cout << endl
+         << endl;
+
+    compress_queue(ready_queue, time_stamp);
+    PrintGanttChart(ready_queue, time_stamp);
+
+    cout << endl
+         << endl;
     return 0;
 }

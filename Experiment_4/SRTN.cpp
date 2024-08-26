@@ -161,6 +161,44 @@ void PrintGanttChart(queue<Process> ready_queue, queue<double> time_stamp)
     cout << endl;
 }
 
+void compress_queue(queue<Process> &ready_queue, queue<double> &time_stamp)
+{
+    queue<Process> temp_ready_queue = ready_queue, temp1;
+    queue<double> temp_time_stamp = time_stamp, temp2;
+    Process p = temp_ready_queue.front();
+    double ts = temp_time_stamp.front();
+    temp2.push(ts);
+    temp_ready_queue.pop();
+    temp_time_stamp.pop();
+    ts = temp_time_stamp.front();
+    temp_time_stamp.pop();
+
+    while (!temp_ready_queue.empty())
+    {
+        if (p.id == temp_ready_queue.front().id)
+        {
+            ts = temp_time_stamp.front();
+            temp_ready_queue.pop();
+            temp_time_stamp.pop();
+        }
+
+        else
+        {
+            temp1.push(p);
+            temp2.push(ts);
+            p = temp_ready_queue.front();
+            ts = temp_time_stamp.front();
+            temp_ready_queue.pop();
+            temp_time_stamp.pop();
+        }
+    }
+    temp1.push(p);
+    temp2.push(ts);
+
+    ready_queue = temp1;
+    time_stamp = temp2;
+}
+
 int main()
 {
     int n;
@@ -187,6 +225,7 @@ int main()
     cout << endl
          << endl;
 
+    compress_queue(ready_queue, time_stamp);
     PrintGanttChart(ready_queue, time_stamp);
 
     cout << endl

@@ -16,14 +16,15 @@ struct processes
 void input(processes p[], int n)
 {
     for (int i = 0; i < n; i++)
-    {
-        printf("\n\tProcess: %d\n", i + 1);
         p[i].ProcessNo = i + 1;
-        printf("Enter the burst time: ");
+
+    printf("Enter the burst time: ");
+    for (int i = 0; i < n; i++)
         scanf("%f", &p[i].BurstTime);
-        printf("Enter the Arrival time: ");
+
+    printf("\nEnter the Arrival time: ");
+    for (int i = 0; i < n; i++)
         scanf("%f", &p[i].ArrivalTime);
-    }
 }
 
 void sort(processes p[], int n)
@@ -168,7 +169,6 @@ int main()
     return 0;
 }
 
-
 /*
 
 Output:
@@ -189,10 +189,10 @@ Enter the burst time: 6
 Enter the Arrival time: 3
 
 
-        Process   Arrival Time        Burst Time          TAT       WT        
-        1         1.00                4.00                4.00      0.00      
-        2         1.00                5.00                9.00      4.00      
-        3         3.00                6.00                13.00     7.00      
+        Process   Arrival Time        Burst Time          TAT       WT
+        1         1.00                4.00                4.00      0.00
+        2         1.00                5.00                9.00      4.00
+        3         3.00                6.00                13.00     7.00
 
 Average TAT: 8.67
 Average WT: 3.67
@@ -200,9 +200,9 @@ Average WT: 3.67
 
 
 Gantt Chart:
- -------- ---------- ------------ 
+ -------- ---------- ------------
 |   P1   |    P2    |     P3     |
- -------- ---------- ------------ 
+ -------- ---------- ------------
 1        5         10           16
 
 

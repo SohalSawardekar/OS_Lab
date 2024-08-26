@@ -1,0 +1,8 @@
+{
+  "files.associations": {
+    "*html": "html",
+    "queue": "cpp",
+    "vector": "cpp",
+    "ostream": "cpp"
+  }
+}

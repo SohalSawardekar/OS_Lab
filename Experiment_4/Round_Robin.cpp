@@ -19,6 +19,49 @@ typedef struct Process
     float waitingTime;
 } processes;
 
+void sort(vector<processes> &p, int n)
+{
+    processes temp;
+    for (int i = 0; i < n - 1; i++)
+    {
+        for (int j = 0; j < n - i - 1; j++)
+        {
+            if (p[j + 1].arrivalTime < p[j].arrivalTime)
+            {
+                temp = p[j + 1];
+                p[j + 1] = p[j];
+                p[j] = temp;
+            }
+            else if (p[j + 1].arrivalTime == p[j].arrivalTime)
+            {
+                if (p[j + 1].burstTime < p[j].burstTime)
+                {
+                    temp = p[j + 1];
+                    p[j + 1] = p[j];
+                    p[j] = temp;
+                }
+            }
+        }
+    }
+}
+
+void Finalsort(vector<processes> &p, int n)
+{
+    processes temp;
+    for (int i = 0; i < n - 1; i++)
+    {
+        for (int j = 0; j < n - i - 1; j++)
+        {
+            if (p[j + 1].id < p[j].id)
+            {
+                temp = p[j + 1];
+                p[j + 1] = p[j];
+                p[j] = temp;
+            }
+        }
+    }
+}
+
 void input(vector<processes> &p, int n) // Pass vector by reference
 {
     for (int i = 0; i < n; i++)
@@ -54,56 +97,71 @@ void PrintTable(vector<processes> &p, int n)
     }
 }
 
-void SRTN(vector<processes> &proc, int n, queue<Process> &ready_queue, queue<double> &time_stamp)
+void RR(vector<processes> &proc, int n, queue<Process> &ready_queue, queue<double> &time_stamp, float time_slice)
 {
-    vector<bool> isCompleted(n, false); // To track if a process is completed
     int currentTime = 0;
     int completed = 0;
     float totalTAT = 0, totalWT = 0;
 
+    queue<int> rq;
+    vector<bool> isInQueue(n, false);
+
     while (completed != n)
     {
-        float minRemainingTime = FLT_MAX;
-        int index = -1;
-
-        // Select the process with the shortest remaining time at the current time
         for (int i = 0; i < n; i++)
         {
-            if (proc[i].arrivalTime <= currentTime && !isCompleted[i] && proc[i].remainingTime < minRemainingTime)
+            if (proc[i].arrivalTime <= currentTime && !isInQueue[i] && proc[i].remainingTime > 0)
             {
-                minRemainingTime = proc[i].remainingTime;
-                index = i;
+                rq.push(i);
+                isInQueue[i] = true;
             }
         }
 
-        if (index == -1)
+        if (rq.empty())
         {
-            // No process is ready, so just advance the current time
+            // If no process is ready, advance the current time
             currentTime++;
+            continue;
+        }
+
+        int index = rq.front();
+        rq.pop();
+
+        // Process the selected process
+        ready_queue.push(proc[index]);
+        float executionTime = min(time_slice, proc[index].remainingTime);
+        proc[index].remainingTime -= executionTime;
+        currentTime += executionTime;
+        time_stamp.push(currentTime);
+
+        // If process has finished executing
+        if (proc[index].remainingTime <= 0)
+        {
+            proc[index].completionTime = currentTime;
+            proc[index].turnaroundTime = proc[index].completionTime - proc[index].arrivalTime;
+            proc[index].waitingTime = proc[index].turnaroundTime - proc[index].burstTime;
+
+            totalTAT += proc[index].turnaroundTime;
+            totalWT += proc[index].waitingTime;
+
+            completed++;
         }
         else
         {
-            // Process the selected process
-            ready_queue.push(proc[index]);
-            proc[index].remainingTime -= 1;
-            currentTime++;
-            time_stamp.push(currentTime);
-            if (proc[index].remainingTime <= 0)
+            // If process has not finished, put it back in the queue after adding any new arrivals
+            for (int i = 0; i < n; i++)
             {
-                // Process completed
-                proc[index].completionTime = currentTime;
-                proc[index].turnaroundTime = proc[index].completionTime - proc[index].arrivalTime;
-                proc[index].waitingTime = proc[index].turnaroundTime - proc[index].burstTime;
-
-                totalTAT += proc[index].turnaroundTime;
-                totalWT += proc[index].waitingTime;
-
-                isCompleted[index] = true;
-                completed++;
+                if (proc[i].arrivalTime <= currentTime && !isInQueue[i] && proc[i].remainingTime > 0)
+                {
+                    rq.push(i);
+                    isInQueue[i] = true;
+                }
             }
+            rq.push(index); // Add the current process back to the end of the queue
         }
     }
 
+    Finalsort(proc, n);
     cout << endl;
     PrintTable(proc, n);
     cout << endl;
@@ -220,7 +278,14 @@ int main()
 
     time_stamp.push(temp_arrival);
 
-    SRTN(proc, n, ready_queue, time_stamp);
+    float time_slice;
+
+    cout << "Enter time slice: ";
+    cin >> time_slice;
+
+    sort(proc, n);
+
+    RR(proc, n, ready_queue, time_stamp, time_slice);
 
     cout << endl
          << endl;

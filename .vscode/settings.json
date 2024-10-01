@@ -2,6 +2,7 @@
   "files.associations": {
     "*html": "html",
     "queue": "cpp",
-    "iostream": "cpp"
+    "iostream": "cpp",
+    "vector": "cpp"
   }
 }

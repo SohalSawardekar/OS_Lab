@@ -5,18 +5,16 @@ using namespace std;
 
 class CircularQueue
 {
-    vector<char> buffer; // Dynamic buffer using a vector
+    vector<char> buffer;
     int IN, OUT;
     int bufferSize;
 
 public:
-    // Constructor to initialize the circular queue
     CircularQueue(int size) : IN(-1), OUT(-1), bufferSize(size)
     {
         buffer.resize(size);
     }
 
-    // Produce item (insert into the buffer)
     void produce(char item)
     {
         if (isFull())
@@ -26,7 +24,7 @@ public:
         }
 
         if (IN == -1)
-        { // If initially empty
+        {
             IN = 0;
         }
 

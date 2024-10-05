@@ -9,10 +9,16 @@ class BankersAlgorithm
     int n, m;
     vector<vector<int>> max, allocation, need;
     vector<int> available;
+    string errorMessage = "";
 
     bool isSafe(vector<int> &work, vector<bool> &finish)
     {
         vector<int> safeSeq;
+
+        cout << "Available Matrix: " << endl;
+        for (int i = 0; i < m; i++)
+            cout << work[i] << "   ";
+        cout << "\t--" << endl;
         for (int i = 0; i < n; i++)
         {
             if (!finish[i])
@@ -22,6 +28,7 @@ class BankersAlgorithm
                 {
                     if (need[i][j] > work[j])
                     {
+                        errorMessage = "resources required are greater than need";
                         canAllocate = false;
                         break;
                     }
@@ -29,7 +36,11 @@ class BankersAlgorithm
                 if (canAllocate)
                 {
                     for (int j = 0; j < m; j++)
+                    {
                         work[j] += allocation[i][j];
+                        cout << work[j] << "   ";
+                    }
+                    cout << "\tP" << i << endl;
                     finish[i] = true;
                     safeSeq.push_back(i);
                     i = -1;
@@ -38,7 +49,7 @@ class BankersAlgorithm
         }
         if (safeSeq.size() == n)
         {
-            cout << "Safe sequence: ";
+            cout << "\nSafe sequence: ";
             for (int i : safeSeq)
                 cout << "P" << i << " ";
             cout << endl;
@@ -68,7 +79,14 @@ public:
         cout << "Enter the allocation matrix:" << endl;
         for (int i = 0; i < n; i++)
             for (int j = 0; j < m; j++)
+            {
                 cin >> allocation[i][j];
+                if (allocation[i][j] > max[i][j])
+                {
+                    cout << "\t\t...Allocated Resources Greater than Max Resources..." << endl;
+                    exit(1);
+                }
+            }
 
         cout << "Enter the available resources:" << endl;
         for (int j = 0; j < m; j++)
@@ -116,30 +134,56 @@ public:
         if (isSafe(work, finish))
             cout << "The system is in a safe state." << endl;
         else
+        {
             cout << "The system is not in a safe state." << endl;
+            cout << endl;
+            cout << "Error: "
+                 << errorMessage << endl;
+        }
     }
 
     void requestResources()
     {
-        int pid;
+        int pid, tmp = 0;
         vector<int> request(m);
-
+        errorMessage = "";
         cout << "Enter the process No for the request(starts from 0): ";
         cin >> pid;
+
+        for (int i = 0; i < m; i++)
+            if (need[pid][i] == 0)
+                tmp++;
+
+        if (tmp == m)
+        {
+            cout << "Process " << pid << " has no resource requests." << endl;
+            return;
+        }
+
         cout << "Enter the resource request for process " << pid << ": ";
         for (int j = 0; j < m; j++)
             cin >> request[j];
         bool valid = true;
         for (int j = 0; j < m; j++)
         {
-            if (request[j] > need[pid][j] || request[j] > available[j])
+            if (request[j] > need[pid][j])
             {
+                errorMessage = "Requested resources is greater than Need resources";
+                valid = false;
+                break;
+            }
+            else if (request[j] > (0.6 * available[j]))
+            {
+                errorMessage = "Request resources is greater than available resources";
                 valid = false;
                 break;
             }
         }
         if (!valid)
         {
+            cout << endl;
+            cout << "Error: " << errorMessage << endl
+                 << endl;
             cout << "Invalid request. Process must wait." << endl;
             return;
         }
@@ -181,7 +225,7 @@ int main()
     {
         cout << "\nBanker's Algorithm Menu:" << endl;
         cout << "1. Display current state" << endl;
-        cout << "2. Check system safety" << endl;
+        cout << "2. Check Safe Sequence" << endl;
         cout << "3. Request resources" << endl;
         cout << "4. Exit" << endl;
         cout << "Enter your choice: ";
@@ -190,18 +234,23 @@ int main()
         switch (choice)
         {
         case 1:
+            cout << endl;
             banker.displayState();
             break;
         case 2:
+            cout << endl;
             banker.checkSafeState();
             break;
         case 3:
+            cout << endl;
             banker.requestResources();
             break;
         case 4:
+            cout << endl;
             cout << "Exiting program." << endl;
             return 0;
         default:
+            cout << endl;
             cout << "Invalid choice. Please try again." << endl;
         }
     }

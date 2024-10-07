@@ -28,49 +28,44 @@ public:
             IN = 0;
         }
 
-        OUT = (OUT + 1) % bufferSize; // Circular increment
+        OUT = (OUT + 1) % bufferSize;
         buffer[OUT] = item;
         cout << "\nProduce added to buffer: " << item << "\n";
         display();
     }
 
-    // Consume item (remove from the buffer)
     char consume()
     {
         if (isEmpty())
         {
             cout << "\nBuffer is EMPTY!\n";
-            return '\0'; // Return null character if empty
+            return '\0'; 
         }
 
         char item = buffer[IN];
 
-        // If only one element left
         if (IN == OUT)
         {
-            IN = OUT = -1; // Reset queue
+            IN = OUT = -1; 
         }
         else
         {
-            IN = (IN + 1) % bufferSize; // Circular increment
+            IN = (IN + 1) % bufferSize; 
         }
 
         return item;
     }
 
-    // Check if the buffer is full
     bool isFull() const
     {
         return ((IN == 0 && OUT == bufferSize - 1) || (IN == OUT + 1));
     }
 
-    // Check if the buffer is empty
     bool isEmpty() const
     {
         return (IN == -1);
     }
 
-    // Display the buffer contents
     void display() const
     {
         if (isEmpty())
@@ -113,7 +108,6 @@ int main()
     cout << "Enter the buffer size: ";
     cin >> bufferSize;
 
-    // Create a CircularQueue object with user-defined buffer size
     CircularQueue cq(bufferSize);
 
     int choice;
@@ -128,22 +122,22 @@ int main()
 
         switch (choice)
         {
-        case 1: // Produce item
+        case 1:
             cout << "Enter the item to produce: ";
             cin >> item;
             cq.produce(item);
             break;
-        case 2: // Consume item
+        case 2:
             item = cq.consume();
             if (item != '\0')
             {
                 cout << "Consumed Item: " << item << "\n";
             }
             break;
-        case 3: // Display buffer
+        case 3:
             cq.display();
             break;
-        case 4: // Quit program
+        case 4:
             cout << "Exiting program...\n";
             exit(0);
         default:

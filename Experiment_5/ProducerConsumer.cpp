@@ -5,7 +5,7 @@ using namespace std;
 
 class CircularQueue
 {
-    vector<char> buffer;
+    vector<string> buffer;
     int IN, OUT;
     int bufferSize;
 
@@ -15,7 +15,7 @@ public:
         buffer.resize(size);
     }
 
-    void produce(char item)
+    void produce(string item)
     {
         if (isFull())
         {
@@ -34,23 +34,23 @@ public:
         display();
     }
 
-    char consume()
+    string consume()
     {
         if (isEmpty())
         {
             cout << "\nBuffer is EMPTY!\n";
-            return '\0'; 
+            return '\0';
         }
 
-        char item = buffer[IN];
+        string item = buffer[IN];
 
         if (IN == OUT)
         {
-            IN = OUT = -1; 
+            IN = OUT = -1;
         }
         else
         {
-            IN = (IN + 1) % bufferSize; 
+            IN = (IN + 1) % bufferSize;
         }
 
         return item;
@@ -99,6 +99,8 @@ public:
             }
         }
         cout << "\n";
+        cout << "IN = " << IN << endl;
+        cout << "OUT = " << OUT << endl;
     }
 };
 
@@ -111,7 +113,7 @@ int main()
     CircularQueue cq(bufferSize);
 
     int choice;
-    char item;
+    string item;
 
     while (true)
     {
@@ -129,10 +131,7 @@ int main()
             break;
         case 2:
             item = cq.consume();
-            if (item != '\0')
-            {
-                cout << "Consumed Item: " << item << "\n";
-            }
+            cout << "Consumed Item: " << item << "\n";
             break;
         case 3:
             cq.display();

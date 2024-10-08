@@ -9,6 +9,7 @@ class BankersAlgorithm
     int n, m;
     vector<vector<int>> max, allocation, need;
     vector<int> available;
+    int temp_avail = 0;
     string errorMessage = "";
 
     bool isSafe(vector<int> &work, vector<bool> &finish)
@@ -90,7 +91,10 @@ public:
 
         cout << "Enter the available resources:" << endl;
         for (int j = 0; j < m; j++)
+        {
             cin >> available[j];
+            temp_avail += available[j];
+        }
 
         // Calculate need matrix
         for (int i = 0; i < n; i++)
@@ -147,6 +151,7 @@ public:
         int pid, tmp = 0;
         vector<int> request(m);
         errorMessage = "";
+        int current_avail = 0;
         cout << "Enter the process No for the request(starts from 0): ";
         cin >> pid;
 
@@ -162,7 +167,10 @@ public:
 
         cout << "Enter the resource request for process " << pid << ": ";
         for (int j = 0; j < m; j++)
+        {
             cin >> request[j];
+            current_avail += request[j];
+        }
         bool valid = true;
         for (int j = 0; j < m; j++)
         {
@@ -172,7 +180,13 @@ public:
                 valid = false;
                 break;
             }
-            else if (request[j] > (0.6 * available[j]))
+            else if (request[j] > available[j])
+            {
+                errorMessage = "Request resources is greater than available resources";
+                valid = false;
+                break;
+            }
+            else if (current_avail > 0.8 * temp_avail)
             {
                 errorMessage = "Request resources is greater than available resources";
                 valid = false;

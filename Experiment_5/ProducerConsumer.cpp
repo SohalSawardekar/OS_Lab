@@ -13,6 +13,8 @@ public:
     CircularQueue(int size) : IN(-1), OUT(-1), bufferSize(size)
     {
         buffer.resize(size);
+        for (int i = 0; i < size; i++)
+            buffer[i] = "";
     }
 
     void produce(string item)
@@ -39,10 +41,11 @@ public:
         if (isEmpty())
         {
             cout << "\nBuffer is EMPTY!\n";
-            return '\0';
+            return "";
         }
 
         string item = buffer[IN];
+        buffer[IN] = ""; // Clear the consumed item
 
         if (IN == OUT)
         {
@@ -80,28 +83,13 @@ public:
 
         cout << endl
              << "\nBuffer contains: ";
-        int i = IN;
-        if (IN <= OUT)
+
+        for (int i = 0; i < bufferSize; i++)
         {
-            while (i <= OUT)
-            {
-                cout << buffer[i] << " ";
-                i++;
-            }
-        }
-        else
-        {
-            while (i < bufferSize)
-            {
-                cout << buffer[i] << " ";
-                i++;
-            }
-            i = 0;
-            while (i <= OUT)
-            {
-                cout << buffer[i] << " ";
-                i++;
-            }
+            if (buffer[i] == "")
+                cout << "  " << "NULL" << "  ";
+            else
+                cout << "  " << buffer[i] << "  ";
         }
         cout << "\n\n";
         for (int i = 0; i < 30; i++)
@@ -143,7 +131,7 @@ int main()
             for (int i = 0; i < 30; i++)
                 cout << "-";
             cout << endl;
-            cout << "Consumed Item: " << item << "\n\n";
+            cout << "\nConsumed Item: " << item << "\n\n";
             for (int i = 0; i < 30; i++)
                 cout << "-";
             cout << endl;

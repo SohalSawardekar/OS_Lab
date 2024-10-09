@@ -74,7 +74,12 @@ public:
             return;
         }
 
-        cout << "\nBuffer contains: ";
+        cout << endl;
+        for (int i = 0; i < 30; i++)
+            cout << "-";
+
+        cout << endl
+             << "\nBuffer contains: ";
         int i = IN;
         if (IN <= OUT)
         {
@@ -98,7 +103,10 @@ public:
                 i++;
             }
         }
-        cout << "\n";
+        cout << "\n\n";
+        for (int i = 0; i < 30; i++)
+            cout << "-";
+        cout << endl;
         cout << "IN = " << IN << endl;
         cout << "OUT = " << OUT << endl;
     }
@@ -131,7 +139,14 @@ int main()
             break;
         case 2:
             item = cq.consume();
-            cout << "Consumed Item: " << item << "\n";
+            cout << endl;
+            for (int i = 0; i < 30; i++)
+                cout << "-";
+            cout << endl;
+            cout << "Consumed Item: " << item << "\n\n";
+            for (int i = 0; i < 30; i++)
+                cout << "-";
+            cout << endl;
             break;
         case 3:
             cq.display();

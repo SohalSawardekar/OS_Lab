@@ -5,17 +5,17 @@
 
 using namespace std;
 
-class CSCAN_diskSchedule
+class CLOOK_diskSchedule
 {
     unsigned int trackSize;
     int noOfReqs;
-    vector<int> requests;
+    vector<unsigned int> requests;
     unsigned int currentPos;
     unsigned int totalMovement;
     bool directionRight; // true for moving towards higher track numbers
 
 public:
-    CSCAN_diskSchedule() : trackSize(0), noOfReqs(0), currentPos(0), totalMovement(0), directionRight(true) {}
+    CLOOK_diskSchedule() : trackSize(0), noOfReqs(0), currentPos(0), totalMovement(0), directionRight(true) {}
 
     void input()
     {
@@ -45,18 +45,8 @@ public:
             exit(1);
         }
 
-        int dir;
         cout << "Enter direction (1 for right, 0 for left): ";
-        cin >> dir;
-        if (dir == 1)
-            directionRight = true;
-        else if (dir == 0)
-            directionRight = true;
-        else
-        {
-            cout << "Invalid input" << endl;
-            exit(1);
-        }
+        cin >> directionRight;
     }
 
     void evaluate()
@@ -68,12 +58,8 @@ public:
         }
 
         // Create a vector including all positions that need to be visited
-        vector<int> allTracks = requests;
+        vector<unsigned int> allTracks = requests;
         allTracks.push_back(currentPos);
-
-        // Add disk endpoints
-        allTracks.push_back(0);
-        allTracks.push_back(trackSize - 1);
 
         // Sort all tracks
         sort(allTracks.begin(), allTracks.end());
@@ -88,21 +74,23 @@ public:
         // Move towards higher track numbers
         for (int i = startIndex + 1; i < allTracks.size(); i++)
         {
-            totalMovement += abs((allTracks[i]) - (currentTrack));
+            totalMovement += abs(static_cast<int>(allTracks[i]) - static_cast<int>(currentTrack));
             currentTrack = allTracks[i];
             cout << " -> " << currentTrack;
         }
 
-        // If we haven't processed all requests, jump to beginning and continue
+        // If we haven't processed all requests, jump to the beginning and continue
         if (startIndex > 0)
         {
-            // Add the movement from end to beginning
-            currentTrack = 0;
+            // Add the movement from the last request to the first request
+            totalMovement += abs(static_cast<int>(allTracks[0]) - static_cast<int>(currentTrack));
+            currentTrack = allTracks[0];
+            cout << " -> " << currentTrack;
 
-            // Process remaining requests from beginning
+            // Process remaining requests from the beginning
             for (int i = 0; i < startIndex; i++)
             {
-                totalMovement += abs((allTracks[i]) - (currentTrack));
+                totalMovement += abs(static_cast<int>(allTracks[i]) - static_cast<int>(currentTrack));
                 currentTrack = allTracks[i];
                 cout << " -> " << currentTrack;
             }
@@ -114,7 +102,7 @@ public:
 
 int main()
 {
-    CSCAN_diskSchedule obj;
+    CLOOK_diskSchedule obj;
 
     cout << endl;
     obj.input();

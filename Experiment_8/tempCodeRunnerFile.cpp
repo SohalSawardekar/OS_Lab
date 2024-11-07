@@ -5,20 +5,18 @@
 
 using namespace std;
 
-class CSCAN_diskSchedule
-{
+class LOOK_diskSchedule {
     unsigned int trackSize;
     int noOfReqs;
-    vector<int> requests;
+    vector<unsigned int> requests;
     unsigned int currentPos;
     unsigned int totalMovement;
-    bool directionRight; // true for moving towards higher track numbers
+    bool directionRight; 
 
 public:
-    CSCAN_diskSchedule() : trackSize(0), noOfReqs(0), currentPos(0), totalMovement(0), directionRight(true) {}
+    LOOK_diskSchedule() : trackSize(0), noOfReqs(0), currentPos(0), totalMovement(0), directionRight(true) {}
 
-    void input()
-    {
+    void input() {
         cout << "Enter the track size: ";
         cin >> trackSize;
 
@@ -27,11 +25,9 @@ public:
 
         requests.resize(noOfReqs);
         cout << "Enter the requests: ";
-        for (int i = 0; i < noOfReqs; i++)
-        {
+        for (int i = 0; i < noOfReqs; i++) {
             cin >> requests[i];
-            if (requests[i] >= trackSize)
-            {
+            if (requests[i] >= trackSize) {
                 cout << "Error: Request position cannot exceed track size\n";
                 exit(1);
             }
@@ -39,42 +35,25 @@ public:
 
         cout << "Enter the current position of R/W head: ";
         cin >> currentPos;
-        if (currentPos >= trackSize)
-        {
+        if (currentPos >= trackSize) {
             cout << "Error: Initial position cannot exceed track size\n";
             exit(1);
         }
 
-        int dir;
         cout << "Enter direction (1 for right, 0 for left): ";
-        cin >> dir;
-        if (dir == 1)
-            directionRight = true;
-        else if (dir == 0)
-            directionRight = true;
-        else
-        {
-            cout << "Invalid input" << endl;
-            exit(1);
-        }
+        cin >> directionRight;
     }
 
-    void evaluate()
-    {
-        if (noOfReqs == 0)
-        {
+    void evaluate() {
+        if (noOfReqs == 0) {
             cout << "\nTotal head Movement: 0\n";
             return;
         }
 
         // Create a vector including all positions that need to be visited
-        vector<int> allTracks = requests;
+        vector<unsigned int> allTracks = requests;
         allTracks.push_back(currentPos);
-
-        // Add disk endpoints
-        allTracks.push_back(0);
-        allTracks.push_back(trackSize - 1);
-
+        
         // Sort all tracks
         sort(allTracks.begin(), allTracks.end());
 
@@ -85,24 +64,31 @@ public:
         cout << "\nMovement sequence: " << currentPos;
         int currentTrack = currentPos;
 
-        // Move towards higher track numbers
-        for (int i = startIndex + 1; i < allTracks.size(); i++)
-        {
-            totalMovement += abs((allTracks[i]) - (currentTrack));
-            currentTrack = allTracks[i];
-            cout << " -> " << currentTrack;
-        }
-
-        // If we haven't processed all requests, jump to beginning and continue
-        if (startIndex > 0)
-        {
-            // Add the movement from end to beginning
-            currentTrack = 0;
-
-            // Process remaining requests from beginning
-            for (int i = 0; i < startIndex; i++)
-            {
-                totalMovement += abs((allTracks[i]) - (currentTrack));
+        if (directionRight) {
+            // Move right first
+            for (int i = startIndex + 1; i < allTracks.size(); i++) {
+                totalMovement += abs(static_cast<int>(allTracks[i]) - static_cast<int>(currentTrack));
+                currentTrack = allTracks[i];
+                cout << " -> " << currentTrack;
+            }
+            
+            // Then move left
+            for (int i = startIndex - 1; i >= 0; i--) {
+                totalMovement += abs(static_cast<int>(allTracks[i]) - static_cast<int>(currentTrack));
+                currentTrack = allTracks[i];
+                cout << " -> " << currentTrack;
+            }
+        } else {
+            // Move left first
+            for (int i = startIndex - 1; i >= 0; i--) {
+                totalMovement += abs(static_cast<int>(allTracks[i]) - static_cast<int>(currentTrack));
+                currentTrack = allTracks[i];
+                cout << " -> " << currentTrack;
+            }
+            
+            // Then move right
+            for (int i = startIndex + 1; i < allTracks.size(); i++) {
+                totalMovement += abs(static_cast<int>(allTracks[i]) - static_cast<int>(currentTrack));
                 currentTrack = allTracks[i];
                 cout << " -> " << currentTrack;
             }
@@ -112,9 +98,8 @@ public:
     }
 };
 
-int main()
-{
-    CSCAN_diskSchedule obj;
+int main() {
+    LOOK_diskSchedule obj;
 
     cout << endl;
     obj.input();
@@ -124,3 +109,4 @@ int main()
 
     return 0;
 }
+
